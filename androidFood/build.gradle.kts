@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -46,9 +50,18 @@ dependencies {
     // Tooling support (Previews, etc.)
     implementation("androidx.compose.ui:ui-tooling:1.0.5")
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-alpha01")
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.5.0-alpha01")
+    // Hilt - Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
