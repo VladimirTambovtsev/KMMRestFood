@@ -1,4 +1,7 @@
 package pro.tambovtsev.kmmrestfood.datasource.network
 
-class KtorClientFactory {
+import io.ktor.client.*
+
+expect class KtorClientFactory() {
+    fun build(): HttpClient
 }
