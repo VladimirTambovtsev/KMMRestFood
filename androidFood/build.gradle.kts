@@ -58,7 +58,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     // Ktor
-    implementation(kotlin("io.ktor:ktor-client-android:1.5.2"))
+    implementation("io.ktor:ktor-client-android:1.6.6")
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
 }

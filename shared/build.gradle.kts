@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
-    kotlin("io.ktor:ktor-serialization:1.5.2")
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 version = "1.0"
@@ -23,12 +23,13 @@ kotlin {
         }
     }
 
+    val ktor_version = "1.6.6"
     sourceSets {
         val commonMain by getting {
             dependencies {
-                // Ktor
-                implementation("io.ktor:ktor-client-core:1.5.2")
-                implementation("io.ktor:ktor-serialization:1.5.2")
+                implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization:$ktor_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
             }
         }
         val commonTest by getting {
@@ -39,7 +40,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:1.5.2")
+                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
         val androidTest by getting {
@@ -48,8 +49,16 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosX64Main by getting
-        val iosArm64Main by getting
+        val iosX64Main by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktor_version")
+            }
+        }
+        val iosArm64Main by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktor_version")
+            }
+        }
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
@@ -58,7 +67,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation("io.ktor:ktor-client-ios:1.5.2")
+                implementation("io.ktor:ktor-client-ios:$ktor_version")
             }
         }
         val iosX64Test by getting
