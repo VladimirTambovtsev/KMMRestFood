@@ -18,13 +18,14 @@ import pro.tambovtsev.kmmrestfood.android.presentation.recipe_list.RecipeListScr
 import pro.tambovtsev.kmmrestfood.android.presentation.recipe_list.RecipeListViewModel
 
 @Composable
-fun Navigation(){
+fun Navigation() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.RecipeList.route) {
         composable(route = Screen.RecipeList.route) { navBackStackEntry ->
             // in the future, the hilt-navigation-compose artifact will simplify this
             val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-            val viewModel: RecipeListViewModel = viewModel(key="RecipeListViewModel", factory=factory)
+            val viewModel: RecipeListViewModel =
+                viewModel(key = "RecipeListViewModel", factory = factory)
             RecipeListScreen(
                 onSelectRecipe = { recipeId ->
                     navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
@@ -38,9 +39,10 @@ fun Navigation(){
             })
         ) { navBackStackEntry ->
             val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-            val viewModel: RecipeDetailViewModel = viewModel(key="RecipeDetailViewModel", factory=factory)
+            val viewModel: RecipeDetailViewModel =
+                viewModel(key = "RecipeDetailViewModel", factory = factory)
             RecipeDetailScreen(
-                recipeId = viewModel.recipeId.value
+                recipe = viewModel.recipe.value
             )
         }
     }
