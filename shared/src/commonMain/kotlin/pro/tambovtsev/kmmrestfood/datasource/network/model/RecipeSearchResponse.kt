@@ -9,5 +9,5 @@ data class RecipeSearchResponse (
     var count: Long,
 
     @SerialName("results")
-    var results: List<RecipeDTO>
+    var results: List<RecipeDto>
 )

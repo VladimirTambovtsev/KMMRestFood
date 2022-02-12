@@ -15,7 +15,7 @@ import pro.tambovtsev.kmmrestfood.interactors.recipe_detail.GetRecipe
 import java.lang.Exception
 import javax.inject.Inject
 
-
+@ExperimentalStdlibApi
 @HiltViewModel
 class RecipeDetailViewModel
 @Inject
@@ -36,6 +36,8 @@ constructor(
         getRecipe.execute(recipeId = recipeId).onEach { dataState ->
             println("RecipeDetailVM: loading: ${dataState.isLoading}")
 
+            println("dataState: ${dataState.data}")
+
             dataState.data?.let { recipe ->
                 println("RecipeDetailVM: recipe: ${recipe}")
                 this.recipe.value = recipe
@@ -47,4 +49,10 @@ constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+
+
+
+
+
 

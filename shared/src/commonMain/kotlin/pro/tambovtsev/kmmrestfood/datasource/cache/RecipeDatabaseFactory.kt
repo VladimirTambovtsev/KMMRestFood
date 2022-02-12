@@ -4,13 +4,16 @@ import com.squareup.sqldelight.db.SqlDriver
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.DatetimeUtil
 
-class RecipeDatabaseFactory(private val driverFactory: DriverFactory) {
+
+class RecipeDatabaseFactory(
+    private val driverFactory: DriverFactory
+){
     fun createDatabase(): RecipeDatabase {
-        return RecipeDatabase(driver = driverFactory.createDriver())
+        return RecipeDatabase(driverFactory.createDriver())
     }
 }
 
-expect class DriverFactory{
+expect class DriverFactory {
     fun createDriver(): SqlDriver
 }
 
@@ -29,22 +32,24 @@ fun Recipe_Entity.toRecipe(): Recipe {
     )
 }
 
-fun List<Recipe_Entity>.toRecipeList(): List<Recipe> {
-    return map{ it.toRecipe() }
+fun List<Recipe_Entity>.toRecipeList(): List<Recipe>{
+    return map{it.toRecipe()}
 }
 
-fun List<String>.convertIngredientsToString(): String {
+/**
+ * "Carrot, potato, Chicken, ..."
+ */
+fun List<String>.convertIngredientListToString(): String {
     val ingredientsString = StringBuilder()
-    for (ingredient in this) {
+    for(ingredient in this){
         ingredientsString.append("$ingredient,")
     }
     return ingredientsString.toString()
 }
 
-
-fun String.convertIngredientsToList(): List<String> {
+fun String.convertIngredientsToList(): List<String>{
     val list: ArrayList<String> = ArrayList()
-    for (ingredient in split(",")) {
+    for(ingredient in split(",")){
         list.add(ingredient)
     }
     return list

@@ -59,6 +59,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     // Ktor
     implementation("io.ktor:ktor-client-android:1.6.6")
+    // Accompanist-Coil - Fetching images
+    implementation("io.coil-kt:coil-compose:1.4.0")
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
 }

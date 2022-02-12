@@ -4,11 +4,14 @@ import pro.tambovtsev.kmmrestfood.datasource.network.RecipeServiceImpl.Companion
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.DatetimeUtil
 
+
+
 class RecipeCacheImpl(
-    private val recipeDatabase: RecipeDatabase,
-    private val datetimeUtil: DatetimeUtil
-) : RecipeCache {
-    private val queries: RecipeDBQueries = recipeDatabase.recipeDBQueries
+    val recipeDatabase: RecipeDatabase,
+    private val datetimeUtil: DatetimeUtil,
+): RecipeCache {
+
+    private var queries: RecipeDBQueries = recipeDatabase.recipeDBQueries
 
     override fun insert(recipe: Recipe) {
         queries.insertRecipe(
@@ -18,14 +21,14 @@ class RecipeCacheImpl(
             featured_image = recipe.featuredImage,
             rating = recipe.rating.toLong(),
             source_url = recipe.sourceUrl,
-            ingredients = recipe.ingredientsList.convertIngredientsToString(),
+            ingredients = recipe.ingredientsList.convertIngredientListToString(),
             date_updated = datetimeUtil.toEpochMilliseconds(recipe.dateUpdated),
-            date_added = datetimeUtil.toEpochMilliseconds(recipe.dateAdded)
+            date_added = datetimeUtil.toEpochMilliseconds(recipe.dateAdded),
         )
     }
 
     override fun insert(recipes: List<Recipe>) {
-        for (recipe in recipes) {
+        for(recipe in recipes){
             insert(recipe)
         }
     }
@@ -47,8 +50,10 @@ class RecipeCacheImpl(
 
     override fun get(recipeId: Int): Recipe? {
         return try {
-            queries.getRecipeById(id = recipeId.toLong()).executeAsOneOrNull()?.toRecipe()
-        } catch (e: NullPointerException) {
+            queries
+                .getRecipeById(id = recipeId.toLong())
+                .executeAsOne().toRecipe()
+        }catch (e: NullPointerException){
             null
         }
     }

@@ -2,7 +2,7 @@ package pro.tambovtsev.kmmrestfood.datasource.network
 
 
 import io.ktor.client.*
-import pro.tambovtsev.kmmrestfood.datasource.network.model.RecipeDTO
+import pro.tambovtsev.kmmrestfood.datasource.network.model.RecipeDto
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.DatetimeUtil
 
@@ -10,7 +10,7 @@ expect class KtorClientFactory() {
     fun build(): HttpClient
 }
 
-fun RecipeDTO.toRecipe(): Recipe {
+fun RecipeDto.toRecipe(): Recipe {
     val datetimeUtil = DatetimeUtil()
     return Recipe(
         id = pk,
@@ -25,6 +25,6 @@ fun RecipeDTO.toRecipe(): Recipe {
     )
 }
 
-fun List<RecipeDTO>.toRecipeList(): List<Recipe> {
+fun List<RecipeDto>.toRecipeList(): List<Recipe> {
     return map{ it.toRecipe() }
 }

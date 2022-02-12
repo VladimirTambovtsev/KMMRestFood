@@ -13,25 +13,34 @@ import javax.inject.Inject
 class RecipeListViewModel
 @Inject
 constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val searchRecipes: SearchRecipes
-) : ViewModel() {
+    private val savedStateHandle: SavedStateHandle, // don't need for this VM
+    private val searchRecipes: SearchRecipes,
+): ViewModel() {
 
     init {
         loadRecipes()
     }
 
-    private fun loadRecipes() {
-        searchRecipes.execute(page = 1, query = "chicken")
-            .onEach { dataState ->
-                println("RecipeListVM: ${dataState.isLoading}")
-                dataState.data?.let { recipes ->
-                    print("RecipeListVM ${recipes}")
-                }
-                dataState.message?.let { message ->
-                    print("RecipeListVM ${message}")
-                }
+    private fun loadRecipes(){
+        searchRecipes.execute(
+            page = 1,
+            query = "chicken"
+        ).onEach { dataState ->
+            println("RecipeListVM: ${dataState.isLoading}")
+
+            dataState.data?.let { recipes ->
+                println("RecipeListVM: recipes: ${recipes}")
             }
-            .launchIn(viewModelScope)
+
+            dataState.message?.let { message ->
+                println("RecipeListVM: error: ${message}")
+            }
+        }.launchIn(viewModelScope)
     }
 }
+
+
+
+
+
+

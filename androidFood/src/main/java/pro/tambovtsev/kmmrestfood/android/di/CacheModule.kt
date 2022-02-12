@@ -21,7 +21,12 @@ object CacheModule {
 
     @Singleton
     @Provides
-    fun provideRecipeCache(recipeDatabase: RecipeDatabase): RecipeCache {
-        return RecipeCacheImpl(recipeDatabase = recipeDatabase, datetimeUtil = DatetimeUtil())
+    fun provideRecipeCache(
+        recipeDatabase: RecipeDatabase,
+    ): RecipeCache {
+        return RecipeCacheImpl(
+            recipeDatabase = recipeDatabase,
+            datetimeUtil = DatetimeUtil(),
+        )
     }
 }

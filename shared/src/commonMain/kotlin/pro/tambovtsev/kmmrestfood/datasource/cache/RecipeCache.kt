@@ -3,6 +3,7 @@ package pro.tambovtsev.kmmrestfood.datasource.cache
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 
 interface RecipeCache {
+
     fun insert(recipe: Recipe)
 
     fun insert(recipes: List<Recipe>)

@@ -4,31 +4,32 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecipeDTO(
+data class RecipeDto(
+
     @SerialName("pk")
-    val pk: Int,
+    var pk: Int,
 
     @SerialName("title")
-    val title: String,
+    var title: String,
 
     @SerialName("publisher")
-    val publisher: String,
+    var publisher: String,
 
     @SerialName("featured_image")
-    val featuredImage: String,
+    var featuredImage: String,
 
     @SerialName("rating")
-    val rating: Int,
+    var rating: Int = 0,
 
     @SerialName("source_url")
-    val sourceUrl: String,
+    var sourceUrl: String,
 
     @SerialName("ingredients")
-    val ingredients: List<String> = emptyList(),
+    var ingredients: List<String> = emptyList(),
 
     @SerialName("long_date_added")
-    val longDateAdded: Long,
+    var longDateAdded: Long,
 
     @SerialName("long_date_updated")
-    val longDateUpdated: Long,
+    var longDateUpdated: Long,
 )

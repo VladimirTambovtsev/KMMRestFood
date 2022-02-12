@@ -19,7 +19,7 @@ import pro.tambovtsev.kmmrestfood.android.presentation.recipe_list.RecipeListVie
 @ExperimentalMaterialApi
 @ExperimentalStdlibApi
 @Composable
-fun Navigation(){
+fun Navigation() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.RecipeList.route) {
         composable(route = Screen.RecipeList.route) { navBackStackEntry ->
@@ -42,6 +42,9 @@ fun Navigation(){
             val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
             val viewModel: RecipeDetailViewModel =
                 viewModel(key = "RecipeDetailViewModel", factory = factory)
+
+            print("viewModel.recipe.value: ${viewModel.recipe.value}")
+
             RecipeDetailScreen(
                 recipe = viewModel.recipe.value
             )
