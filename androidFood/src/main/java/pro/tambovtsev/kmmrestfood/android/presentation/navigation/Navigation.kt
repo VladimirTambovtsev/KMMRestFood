@@ -28,6 +28,7 @@ fun Navigation() {
             val viewModel: RecipeListViewModel =
                 viewModel(key = "RecipeListViewModel", factory = factory)
             RecipeListScreen(
+                state = viewModel.state.value,
                 onSelectRecipe = { recipeId ->
                     navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
                 }
@@ -42,43 +43,9 @@ fun Navigation() {
             val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
             val viewModel: RecipeDetailViewModel =
                 viewModel(key = "RecipeDetailViewModel", factory = factory)
-
-            print("viewModel.recipe.value: ${viewModel.recipe.value}")
-
             RecipeDetailScreen(
                 recipe = viewModel.recipe.value
             )
         }
     }
 }
-
-//@Composable
-//fun Navigation() {
-//    val navController = rememberNavController()
-//    NavHost(navController = navController, startDestination = Screen.RecipeList.route) {
-//        composable(route = Screen.RecipeList.route) { navBackStackEntry ->
-//            // in the future, the hilt-navigation-compose artifact will simplify this
-//            val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-//            val viewModel: RecipeListViewModel =
-//                viewModel(key = "RecipeListViewModel", factory = factory)
-//            RecipeListScreen(
-//                onSelectRecipe = { recipeId ->
-//                    navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
-//                }
-//            )
-//        }
-//        composable(
-//            route = Screen.RecipeDetail.route + "/{recipeId}",
-//            arguments = listOf(navArgument("recipeId") {
-//                type = NavType.IntType
-//            })
-//        ) { navBackStackEntry ->
-//            val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-//            val viewModel: RecipeDetailViewModel =
-//                viewModel(key = "RecipeDetailViewModel", factory = factory)
-//            RecipeDetailScreen(
-//                recipe = viewModel.recipe.value
-//            )
-//        }
-//    }
-//}
