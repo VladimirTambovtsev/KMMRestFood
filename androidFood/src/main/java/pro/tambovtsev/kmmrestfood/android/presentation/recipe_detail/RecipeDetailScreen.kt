@@ -10,6 +10,7 @@ import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 fun RecipeDetailScreen(
     recipe: Recipe?
 ){
+    println("RecipeDetailScreen recipe: ${recipe?.title}")
     if(recipe == null){
         Text("Unable to get the details of this recipe...")
     }

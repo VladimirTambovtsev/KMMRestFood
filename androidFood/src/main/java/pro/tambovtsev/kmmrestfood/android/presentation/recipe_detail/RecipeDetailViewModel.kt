@@ -21,34 +21,28 @@ class RecipeDetailViewModel
 @Inject
 constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getRecipe: GetRecipe
+    private val getRecipe: GetRecipe,
 ): ViewModel() {
 
     val recipe: MutableState<Recipe?> = mutableStateOf(null)
 
     init {
-        try {
-            savedStateHandle.get<Int>("recipeId")?.let { recipeId ->
-                viewModelScope.launch {
-                    getRecipe(recipeId = recipeId)
-                }
-            }
-        }catch (e: Exception){
-            // will throw exception if arg is not there for whatever reason.
-            // we don't need to do anything because it will already show a composable saying "Unable to get the details of this recipe..."
-            println("Exception: ${e.localizedMessage}")
+        savedStateHandle.get<Int>("recipeId")?.let { recipeId ->
+            getRecipe(recipeId = recipeId)
         }
     }
 
-    private fun getRecipe(recipeId: Int) {
+    private fun getRecipe(recipeId: Int){
         getRecipe.execute(recipeId = recipeId).onEach { dataState ->
-            println("RecipeDetailVM: ${dataState.isLoading}")
+            println("RecipeDetailVM: loading: ${dataState.isLoading}")
+
             dataState.data?.let { recipe ->
-                print("RecipeDetailVM ${recipe}")
+                println("RecipeDetailVM: recipe: ${recipe}")
                 this.recipe.value = recipe
             }
+
             dataState.message?.let { message ->
-                print("RecipeDetailVM ${recipe}")
+                println("RecipeDetailVM: error: ${message}")
             }
         }.launchIn(viewModelScope)
     }

@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import pro.tambovtsev.kmmrestfood.datasource.cache.RecipeCache
 import pro.tambovtsev.kmmrestfood.datasource.network.RecipeService
 import pro.tambovtsev.kmmrestfood.interactors.recipe_detail.GetRecipe
 import pro.tambovtsev.kmmrestfood.interactors.recipe_list.SearchRecipes
@@ -14,13 +15,13 @@ import javax.inject.Singleton
 object InteractorsModule {
     @Singleton
     @Provides
-    fun searchRecipes(recipeService: RecipeService): SearchRecipes {
-        return SearchRecipes(recipeService = recipeService)
+    fun searchRecipes(recipeService: RecipeService, recipeCache: RecipeCache): SearchRecipes {
+        return SearchRecipes(recipeService = recipeService, recipeCache = recipeCache)
     }
 
     @Singleton
     @Provides
-    fun provideGetRecipe(recipeService: RecipeService): GetRecipe {
-        return GetRecipe(recipeService = recipeService)
+    fun provideGetRecipe(recipeCache: RecipeCache): GetRecipe {
+        return GetRecipe(recipeCache = recipeCache)
     }
 }

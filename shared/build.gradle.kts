@@ -3,6 +3,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     kotlin("plugin.serialization") version "1.6.10"
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
@@ -29,7 +30,8 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktor_version")
                 implementation("io.ktor:ktor-client-serialization:$ktor_version")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("com.squareup.sqldelight:runtime:1.5.3")
             }
         }
         val commonTest by getting {
@@ -41,6 +43,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktor_version")
+                implementation("com.squareup.sqldelight:android-driver:1.5.3")
             }
         }
         val androidTest by getting {
@@ -52,11 +55,13 @@ kotlin {
         val iosX64Main by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }
         val iosArm64Main by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }
         val iosSimulatorArm64Main by getting
@@ -68,6 +73,7 @@ kotlin {
 
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }
         val iosX64Test by getting
@@ -88,5 +94,13 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 32
+    }
+}
+
+
+sqldelight {
+    database("RecipeDatabase") {
+        packageName = "pro.tambovtsev.kmmrestfood.datasource.cache"
+        sourceFolders = listOf("sqldelight")
     }
 }
