@@ -1,5 +1,6 @@
 package pro.tambovtsev.kmmrestfood.interactors.recipe_list
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import pro.tambovtsev.kmmrestfood.datasource.cache.RecipeCache
@@ -22,6 +23,10 @@ class SearchRecipes(
                 page = page,
                 query = query,
             )
+
+            // delay 500ms so we can see loading
+            delay(500)
+
             // insert into cache
             recipeCache.insert(recipes)
 
@@ -41,9 +46,5 @@ class SearchRecipes(
         }
     }
 }
-
-
-
-
 
 

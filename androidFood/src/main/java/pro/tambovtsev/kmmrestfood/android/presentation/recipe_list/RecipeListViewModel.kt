@@ -32,14 +32,10 @@ constructor(
             page = state.value.page,
             query = state.value.query
         ).onEach { dataState ->
-            println("RecipeListVM: ${dataState.isLoading}")
-
             state.value = state.value.copy(isLoading = dataState.isLoading)
 
             dataState.data?.let { recipes ->
-                println("RecipeListVM: recipes: ${recipes}")
                 appendRecipes(recipes)
-                state.value = state.value.copy(recipes = recipes)
             }
 
             dataState.message?.let { message ->
@@ -48,10 +44,10 @@ constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun appendRecipes(recipes: List<Recipe>) {
-        val current = ArrayList(state.value.recipes)
-        current.addAll(recipes)
-        state.value = state.value.copy(recipes = current)
+    private fun appendRecipes(recipes: List<Recipe>){
+        val curr = ArrayList(state.value.recipes)
+        curr.addAll(recipes)
+        state.value = state.value.copy(recipes = curr)
     }
 }
 
