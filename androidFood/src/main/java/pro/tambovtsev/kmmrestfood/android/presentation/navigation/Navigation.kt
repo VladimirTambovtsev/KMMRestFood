@@ -1,12 +1,8 @@
 package pro.tambovtsev.kmmrestfood.android.presentation.navigation
 
-import android.os.Bundle
-import androidx.annotation.IdRes
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
