@@ -5,10 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
-import pro.tambovtsev.kmmrestfood.android.BASE_URL
 import pro.tambovtsev.kmmrestfood.datasource.network.KtorClientFactory
 import pro.tambovtsev.kmmrestfood.datasource.network.RecipeService
 import pro.tambovtsev.kmmrestfood.datasource.network.RecipeServiceImpl
+import pro.tambovtsev.kmmrestfood.datasource.network.RecipeServiceImpl.Companion.BASE_URL
 import javax.inject.Singleton
 
 @Module
