@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.interactors.recipe_list.SearchRecipes
+import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListEvents
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListState
 import javax.inject.Inject
 
@@ -24,6 +25,36 @@ constructor(
     val state: MutableState<RecipeListState> = mutableStateOf(RecipeListState())
 
     init {
+        onTriggerEvent(RecipeListEvents.LoadRecipes)
+    }
+
+    fun onTriggerEvent(event: RecipeListEvents) {
+        when(event) {
+            RecipeListEvents.LoadRecipes -> {
+                loadRecipes()
+            }
+            RecipeListEvents.NextPage -> {
+                nextPage()
+            }
+            RecipeListEvents.NewSearch -> {
+                newSearch()
+            }
+            is RecipeListEvents.OnUpdateQuery -> {
+                state.value = state.value.copy(query =  event.query)
+            }
+            else -> {
+                handleError("Invalid Event")
+            }
+        }
+    }
+
+    private fun newSearch(){
+        state.value = state.value.copy(page = 1, recipes = listOf())
+        loadRecipes()
+    }
+
+    private fun nextPage() {
+        state.value = state.value.copy(page = state.value.page + 1)
         loadRecipes()
     }
 
@@ -39,7 +70,7 @@ constructor(
             }
 
             dataState.message?.let { message ->
-                println("RecipeListVM: error: ${message}")
+                handleError("Invalid Event: $message")
             }
         }.launchIn(viewModelScope)
     }
@@ -49,6 +80,8 @@ constructor(
         curr.addAll(recipes)
         state.value = state.value.copy(recipes = curr)
     }
+
+    private fun handleError(errorMessage: String) {}
 }
 
 

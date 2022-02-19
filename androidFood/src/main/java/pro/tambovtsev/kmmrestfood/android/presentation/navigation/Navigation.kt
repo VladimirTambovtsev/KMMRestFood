@@ -29,6 +29,7 @@ fun Navigation() {
                 viewModel(key = "RecipeListViewModel", factory = factory)
             RecipeListScreen(
                 state = viewModel.state.value,
+                onTriggerEvent = {viewModel.onTriggerEvent(it)},
                 onSelectRecipe = { recipeId ->
                     navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
                 }
