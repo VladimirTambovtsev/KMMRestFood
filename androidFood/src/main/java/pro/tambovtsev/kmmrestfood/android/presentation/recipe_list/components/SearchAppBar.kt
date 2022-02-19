@@ -4,14 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -19,11 +19,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import pro.tambovtsev.kmmrestfood.presentation.recipe_list.FoodCategory
+
 
 @ExperimentalComposeUiApi
 @Composable
 fun SearchAppBar(
     query: String,
+    categories: List<FoodCategory>,
     onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit,
 ) {
@@ -62,6 +65,24 @@ fun SearchAppBar(
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.surface),
                 )
             }
+            LazyRow(
+                modifier = Modifier
+                    .padding(start = 8.dp, bottom = 8.dp),
+            ) {
+                items(categories) {
+                    FoodCategoryPill(
+                        category = it.value,
+                        isSelected = false,
+                        onSelectedCategoryChanged = {
+                            // TODO("change the selected category")
+                        },
+                    )
+                }
+            }
         }
     }
 }
+
+
+
+
