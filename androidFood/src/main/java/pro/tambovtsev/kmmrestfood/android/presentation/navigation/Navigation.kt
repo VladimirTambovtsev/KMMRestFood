@@ -45,7 +45,8 @@ fun Navigation() {
             val viewModel: RecipeDetailViewModel =
                 viewModel(key = "RecipeDetailViewModel", factory = factory)
             RecipeDetailScreen(
-                recipe = viewModel.recipe.value
+                state = viewModel.state.value,
+                onTriggerEvent = viewModel::onTriggerEvent
             )
         }
     }

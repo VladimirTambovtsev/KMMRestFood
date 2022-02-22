@@ -8,11 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import pro.tambovtsev.kmmrestfood.datasource.network.RecipeService
-import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.interactors.recipe_detail.GetRecipe
-import java.lang.Exception
+import pro.tambovtsev.kmmrestfood.presentation.recipe_detail.RecipeDetailEvents
+import pro.tambovtsev.kmmrestfood.presentation.recipe_detail.RecipeDetailState
 import javax.inject.Inject
 
 @ExperimentalStdlibApi
@@ -24,29 +22,44 @@ constructor(
     private val getRecipe: GetRecipe,
 ): ViewModel() {
 
-    val recipe: MutableState<Recipe?> = mutableStateOf(null)
+    val state: MutableState<RecipeDetailState> = mutableStateOf(RecipeDetailState())
 
     init {
         savedStateHandle.get<Int>("recipeId")?.let { recipeId ->
             getRecipe(recipeId = recipeId)
+            onTriggerEvent(RecipeDetailEvents.GetRecipe(recipeId = recipeId))
+        }
+    }
+
+    fun onTriggerEvent(event: RecipeDetailEvents) {
+        when(event) {
+            is RecipeDetailEvents.GetRecipe -> {
+                getRecipe(event.recipeId)
+            } else -> {
+                handleError("Invalid Event")
+            }
         }
     }
 
     private fun getRecipe(recipeId: Int){
         getRecipe.execute(recipeId = recipeId).onEach { dataState ->
-            println("RecipeDetailVM: loading: ${dataState.isLoading}")
 
-            println("dataState: ${dataState.data}")
+            state.value = state.value.copy(isLoading = dataState.isLoading)
 
             dataState.data?.let { recipe ->
-                println("RecipeDetailVM: recipe: ${recipe}")
-                this.recipe.value = recipe
+                println("RecipeDetailVM: recipe: $recipe")
+                state.value = state.value.copy(recipe = recipe)
             }
 
             dataState.message?.let { message ->
-                println("RecipeDetailVM: error: ${message}")
+                println("RecipeDetailVM: error: $message")
+                handleError(message)
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun handleError(errorMessage: String) {
+        println("Error in RecipeDetailViewModel: $errorMessage")
     }
 }
 
