@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.interactors.recipe_list.SearchRecipes
+import pro.tambovtsev.kmmrestfood.presentation.recipe_list.FoodCategory
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListEvents
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListState
 import javax.inject.Inject
@@ -40,12 +41,20 @@ constructor(
                 newSearch()
             }
             is RecipeListEvents.OnUpdateQuery -> {
-                state.value = state.value.copy(query =  event.query)
+                state.value = state.value.copy(query =  event.query, selectedCategory = null)
+            }
+            is RecipeListEvents.OnSelectCategory-> {
+                onSelectCategory(event.category)
             }
             else -> {
                 handleError("Invalid Event")
             }
         }
+    }
+
+    private fun onSelectCategory(category: FoodCategory) {
+        state.value = state.value.copy(selectedCategory = category, query = category.value)
+        newSearch()
     }
 
     private fun newSearch(){
