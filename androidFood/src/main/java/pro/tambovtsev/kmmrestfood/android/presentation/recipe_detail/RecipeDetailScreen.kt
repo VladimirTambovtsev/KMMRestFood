@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pro.tambovtsev.kmmrestfood.android.presentation.components.CircularProgressBar
 import pro.tambovtsev.kmmrestfood.android.presentation.components.RecipeImage
 import pro.tambovtsev.kmmrestfood.android.presentation.recipe_detail.components.RecipeView
 import pro.tambovtsev.kmmrestfood.android.presentation.recipe_list.components.RecipeCard
@@ -28,10 +29,14 @@ fun RecipeDetailScreen(
     onTriggerEvent: (RecipeDetailEvents) -> Unit
 ) {
     AppTheme(
-        displayProgressBar = state.isLoading
+        displayProgressBar = state.isLoading,
+        dialogQueue = state.queue,
+        onRemoveHeadMessageFromQueue = {
+            onTriggerEvent(RecipeDetailEvents.OnRemoveHeadMessageFromQueue)
+        }
     ) {
         if (state.recipe == null && state.isLoading) {
-
+            CircularProgressBar(isDisplayed = true, verticalBias = 0.3f)
         } else if (state.recipe == null) {
             Text(
                 "Unable to get the details of this recipe... ",

@@ -11,6 +11,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import pro.tambovtsev.kmmrestfood.android.presentation.components.CircularProgressBar
+import pro.tambovtsev.kmmrestfood.android.presentation.components.ProcessDialogQueue
+import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
+import pro.tambovtsev.kmmrestfood.domain.util.Queue
 
 
 private val LightThemeColors = lightColors(
@@ -33,18 +36,24 @@ private val LightThemeColors = lightColors(
 @Composable
 fun AppTheme(
     displayProgressBar: Boolean,
+    dialogQueue: Queue<GenericMessageInfo> = Queue(mutableListOf()),
+    onRemoveHeadMessageFromQueue: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colors = LightThemeColors,
         typography = QuickSandTypography,
         shapes = AppShapes
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color =Grey1)
-        ){
+                .background(color = Grey1)
+        ) {
+            ProcessDialogQueue(
+                dialogQueue = dialogQueue,
+                onRemoveHeadMessageFromQueue = onRemoveHeadMessageFromQueue,
+            )
             content()
             CircularProgressBar(isDisplayed = displayProgressBar, 0.3f)
         }

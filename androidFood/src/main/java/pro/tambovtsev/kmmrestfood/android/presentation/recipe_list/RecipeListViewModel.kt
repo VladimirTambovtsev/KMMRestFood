@@ -8,12 +8,19 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
+import pro.tambovtsev.kmmrestfood.domain.model.PositiveAction
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
+import pro.tambovtsev.kmmrestfood.domain.model.UIComponentType
+import pro.tambovtsev.kmmrestfood.domain.util.GenericMessageInfoQueueUtil
+import pro.tambovtsev.kmmrestfood.domain.util.Queue
 import pro.tambovtsev.kmmrestfood.interactors.recipe_list.SearchRecipes
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.FoodCategory
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListEvents
 import pro.tambovtsev.kmmrestfood.presentation.recipe_list.RecipeListState
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class RecipeListViewModel
@@ -21,7 +28,7 @@ class RecipeListViewModel
 constructor(
     private val savedStateHandle: SavedStateHandle, // don't need for this VM
     private val searchRecipes: SearchRecipes,
-): ViewModel() {
+) : ViewModel() {
 
     val state: MutableState<RecipeListState> = mutableStateOf(RecipeListState())
 
@@ -30,7 +37,7 @@ constructor(
     }
 
     fun onTriggerEvent(event: RecipeListEvents) {
-        when(event) {
+        when (event) {
             RecipeListEvents.LoadRecipes -> {
                 loadRecipes()
             }
@@ -41,13 +48,21 @@ constructor(
                 newSearch()
             }
             is RecipeListEvents.OnUpdateQuery -> {
-                state.value = state.value.copy(query =  event.query, selectedCategory = null)
+                state.value = state.value.copy(query = event.query, selectedCategory = null)
             }
-            is RecipeListEvents.OnSelectCategory-> {
+            is RecipeListEvents.OnSelectCategory -> {
                 onSelectCategory(event.category)
             }
+            is RecipeListEvents.OnRemoveHeadMessageFromQueue -> {
+                removeHeadMessage()
+            }
             else -> {
-                handleError("Invalid Event")
+                val messageInfoBuilder = GenericMessageInfo.Builder()
+                    .id(UUID.randomUUID().toString())
+                    .title("Invalid Event")
+                    .uiComponentType(UIComponentType.Dialog)
+                    .description("Something went wrong.")
+                appendToMessageQueue(messageInfo = messageInfoBuilder)
             }
         }
     }
@@ -57,7 +72,7 @@ constructor(
         newSearch()
     }
 
-    private fun newSearch(){
+    private fun newSearch() {
         state.value = state.value.copy(page = 1, recipes = listOf())
         loadRecipes()
     }
@@ -67,7 +82,7 @@ constructor(
         loadRecipes()
     }
 
-    private fun loadRecipes(){
+    private fun loadRecipes() {
         searchRecipes.execute(
             page = state.value.page,
             query = state.value.query
@@ -79,18 +94,44 @@ constructor(
             }
 
             dataState.message?.let { message ->
-                handleError("Invalid Event: $message")
+                val messageInfoBuilder = GenericMessageInfo.Builder()
+                    .id(UUID.randomUUID().toString())
+                    .title("Invalid Event")
+                    .uiComponentType(UIComponentType.Dialog)
+                    .description("$message")
+                appendToMessageQueue(messageInfoBuilder)
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun appendRecipes(recipes: List<Recipe>){
+    private fun appendRecipes(recipes: List<Recipe>) {
         val curr = ArrayList(state.value.recipes)
         curr.addAll(recipes)
         state.value = state.value.copy(recipes = curr)
     }
 
-    private fun handleError(errorMessage: String) {}
+    private fun appendToMessageQueue(messageInfo: GenericMessageInfo.Builder) {
+        if (!GenericMessageInfoQueueUtil().doesMessageAlreadyExistInQueue(
+                queue = state.value.queue,
+                messageInfo = messageInfo.build()
+            )
+        ) {
+            val queue = state.value.queue
+            queue.add(messageInfo.build())
+            state.value = state.value.copy(queue = queue)
+        }
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.queue
+            queue.remove() // can throw exception if empty
+            state.value = state.value.copy(queue = Queue(mutableListOf())) // force recompose
+            state.value = state.value.copy(queue = queue)
+        }catch (e: Exception){
+            // nothing to remove, queue is empty
+        }
+    }
 }
 
 
