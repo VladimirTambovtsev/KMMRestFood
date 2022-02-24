@@ -8,7 +8,9 @@ import pro.tambovtsev.kmmrestfood.datasource.network.RecipeService
 import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.model.UIComponentType
+import pro.tambovtsev.kmmrestfood.domain.util.CommonFlow
 import pro.tambovtsev.kmmrestfood.domain.util.DataState
+import pro.tambovtsev.kmmrestfood.domain.util.asCommonFlow
 
 
 class SearchRecipes(
@@ -18,7 +20,7 @@ class SearchRecipes(
     fun execute(
         page: Int,
         query: String,
-    ): Flow<DataState<List<Recipe>>> = flow {
+    ): CommonFlow<DataState<List<Recipe>>> = flow {
         emit(DataState.loading())
         try {
             val recipes = recipeService.search(
@@ -56,7 +58,7 @@ class SearchRecipes(
                     .description(e.message?: "Unknown Error")
             ))
         }
-    }
+    }.asCommonFlow()
 }
 
 

@@ -6,7 +6,9 @@ import pro.tambovtsev.kmmrestfood.datasource.cache.RecipeCache
 import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.model.UIComponentType
+import pro.tambovtsev.kmmrestfood.domain.util.CommonFlow
 import pro.tambovtsev.kmmrestfood.domain.util.DataState
+import pro.tambovtsev.kmmrestfood.domain.util.asCommonFlow
 
 /**
  * Retrieve a recipe from the cache given it's unique id.
@@ -16,7 +18,7 @@ class GetRecipe (
 ){
     fun execute(
         recipeId: Int,
-    ): Flow<DataState<Recipe>> = flow {
+    ): CommonFlow<DataState<Recipe>> = flow {
         try {
             emit(DataState.loading())
 
@@ -33,6 +35,6 @@ class GetRecipe (
                     .description(e.message?: "Unknown Error")
             ))
         }
-    }
+    }.asCommonFlow()
 
 }
