@@ -8,7 +8,7 @@ struct iOSApp: App {
     
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
+			RecipeListScreen(networkModule: networkModule, cacheModule: cacheModule)
 		}
 	}
 }
