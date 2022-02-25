@@ -10,59 +10,75 @@ import SwiftUI
 import shared
 
 struct RecipeListScreen: View {
-    
+
     // dependencies
     private let networkModule: NetworkModule
     private let cacheModule: CacheModule
     private let searchRecipesModule: SearchRecipesModule
     private let foodCategories: [FoodCategory]
-    
+
     @ObservedObject var viewModel: RecipeListViewModel
-    
+
     init(
-        networkModule: NetworkModule,
-        cacheModule: CacheModule
+            networkModule: NetworkModule,
+            cacheModule: CacheModule
     ) {
         self.networkModule = networkModule
         self.cacheModule = cacheModule
         self.searchRecipesModule = SearchRecipesModule(
-            networkModule: self.networkModule,
-            cacheModule: self.cacheModule
+                networkModule: self.networkModule,
+                cacheModule: self.cacheModule
         )
         let foodCategoryUtil = FoodCategoryUtil()
         self.viewModel = RecipeListViewModel(
-            searchRecipes: searchRecipesModule.searchRecipes,
-            foodCategoryUtil: foodCategoryUtil
+                searchRecipes: searchRecipesModule.searchRecipes,
+                foodCategoryUtil: foodCategoryUtil
         )
         self.foodCategories = foodCategoryUtil.getAllFoodCategories()
     }
-    
+
     var body: some View {
-        VStack{
-            HStack{
-                Text("Page: \(viewModel.state.page), Size: \(viewModel.state.recipes.count)")
-                    .padding()
-            }
-            SearchAppBar(
-                query: viewModel.state.query,
-                selectedCategory: viewModel.state.selectedCategory,
-                foodCategories: foodCategories,
-                onTriggerEvent: { event in
-                    viewModel.onTriggerEvent(stateEvent: event)
-                }
-            )
-            List {
-                ForEach(viewModel.state.recipes, id: \.self.id){ recipe in
-                    RecipeCard(recipe: recipe)
-                        .onAppear(perform: {
-                            if viewModel.shouldQueryNextPage(recipe: recipe){
-                                viewModel.onTriggerEvent(stateEvent: RecipeListEvents.NextPage())
+        NavigationView{
+            ZStack{
+                VStack{
+                    SearchAppBar(
+                            query: viewModel.state.query,
+                            selectedCategory: viewModel.state.selectedCategory,
+                            foodCategories: foodCategories,
+                            onTriggerEvent: { event in
+                                viewModel.onTriggerEvent(stateEvent: event)
                             }
-                    })
-                    .listRowInsets(EdgeInsets())
-                    .padding(.top, 10)
+                    )
+                    List {
+                        ForEach(viewModel.state.recipes, id: \.self.id){ recipe in
+                            ZStack{
+                                VStack{
+                                    RecipeCard(recipe: recipe)
+                                            .onAppear(perform: {
+                                                if viewModel.shouldQueryNextPage(recipe: recipe){
+                                                    viewModel.onTriggerEvent(stateEvent: RecipeListEvents.NextPage())
+                                                }
+                                            })
+                                }
+                                NavigationLink(
+                                        destination: Text("\(recipe.title)")
+                                ){
+                                    // workaround for hiding arrows
+                                    EmptyView()
+                                }.hidden().frame(width: 0)
+                            }
+                                    .listRowInsets(EdgeInsets())
+                                    .padding(.top, 10)
+                        }
+                    }
+                            .listStyle(PlainListStyle())
+                            .background(Color.gray)
+                }
+                if viewModel.state.isLoading {
+                    ProgressView("Searching recipes...")
                 }
             }
+                    .navigationBarHidden(true)
         }
     }
 }
