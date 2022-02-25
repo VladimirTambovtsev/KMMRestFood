@@ -38,9 +38,9 @@ struct RecipeListScreen: View {
     }
 
     var body: some View {
-        NavigationView{
-            ZStack{
-                VStack{
+        NavigationView {
+            ZStack {
+                VStack {
                     SearchAppBar(
                             query: viewModel.state.query,
                             selectedCategory: viewModel.state.selectedCategory,
@@ -50,22 +50,26 @@ struct RecipeListScreen: View {
                             }
                     )
                     List {
-                        ForEach(viewModel.state.recipes, id: \.self.id){ recipe in
-                            ZStack{
-                                VStack{
+                        ForEach(viewModel.state.recipes, id: \.self.id) { recipe in
+                            ZStack {
+                                VStack {
+                                    NavigationLink(
+                                            destination: RecipeDetailScreen(
+                                                    recipeId: Int(recipe.id),
+                                                    cacheModule: self.cacheModule
+                                            )
+                                    ) {
+
                                     RecipeCard(recipe: recipe)
                                             .onAppear(perform: {
-                                                if viewModel.shouldQueryNextPage(recipe: recipe){
+                                                if viewModel.shouldQueryNextPage(recipe: recipe) {
                                                     viewModel.onTriggerEvent(stateEvent: RecipeListEvents.NextPage())
                                                 }
                                             })
+                                        // workaround for hiding arrows
+                                        EmptyView()
+                                    }
                                 }
-                                NavigationLink(
-                                        destination: Text("\(recipe.title)")
-                                ){
-                                    // workaround for hiding arrows
-                                    EmptyView()
-                                }.hidden().frame(width: 0)
                             }
                                     .listRowInsets(EdgeInsets())
                                     .padding(.top, 10)
