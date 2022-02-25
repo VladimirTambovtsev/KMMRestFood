@@ -116,6 +116,13 @@
 			path = components;
 			sourceTree = "<group>";
 		};
+		52688CBB0ED6F603560967CA /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +149,7 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				52688CBB0ED6F603560967CA /* fonts */,
 			);
 			path = iosFood;
 			sourceTree = "<group>";
