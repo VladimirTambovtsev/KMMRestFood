@@ -1,3 +1,6 @@
+![](docs/assets/GithubPreview.png)
+
+
 # KMMRestFood  🖊️
 
 <!-- ![Deploy (API)](https://github.com/VladimirTambovtsev/KMMRestFood/workflows/Deploy%20(API)/badge.svg) 
