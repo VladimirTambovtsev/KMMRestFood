@@ -4,10 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecipeSearchResponse (
-    @SerialName("count")
+data class RecipeSearchResponse(
+    @SerialName("count")            
     var count: Long,
 
-    @SerialName("results")
+    @SerialName("results")            
     var results: List<RecipeDto>
 )

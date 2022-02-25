@@ -1,7 +1,7 @@
 package pro.tambovtsev.kmmrestfood.presentation.recipe_list
 
-import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
+import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.Queue
 
 actual data class RecipeListState(

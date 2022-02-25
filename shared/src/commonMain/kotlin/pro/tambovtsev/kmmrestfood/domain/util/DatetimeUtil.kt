@@ -3,8 +3,7 @@ package pro.tambovtsev.kmmrestfood.domain.util
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 
-class DatetimeUtil
-{
+class DatetimeUtil {
     fun now(): LocalDateTime {
         val currentMoment: Instant = Clock.System.now()
         return currentMoment.toLocalDateTime(TimeZone.UTC)
@@ -24,28 +23,24 @@ class DatetimeUtil
 
     // States: yesterday, today, tomorrow and everything else
     @ExperimentalStdlibApi
-    fun humanizeDatetime(date: LocalDateTime?): String{
+    fun humanizeDatetime(date: LocalDateTime?): String {
         val sb = StringBuilder()
         date?.run {
-            val hour = if(this.hour > 12){
+            val hour = if (this.hour > 12) {
                 (this.hour - 12).toString() + "pm"
-            }
-            else{
-                if(this.hour != 0) this.hour.toString() + "am" else "midnight"
+            } else {
+                if (this.hour != 0) this.hour.toString() + "am" else "midnight"
             }
             val today = now()
             val tomorrow = Clock.System.now().plus(1, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
-            if(this.date == today.date){
+            if (this.date == today.date) {
                 sb.append("Today at $hour")
-            }
-            else if (this.date == tomorrow.date){
+            } else if (this.date == tomorrow.date) {
                 sb.append("Tomorrow at $hour")
-            }
-            else{
+            } else {
                 sb.append(this.date.month.name.lowercase() + " ${this.date.dayOfMonth}")
             }
-        }?: sb.append("Unknown")
+        } ?: sb.append("Unknown")
         return sb.toString()
     }
-
 }

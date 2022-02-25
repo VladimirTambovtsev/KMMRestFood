@@ -1,6 +1,5 @@
 package pro.tambovtsev.kmmrestfood.presentation.recipe_list
 
-
 class FoodCategoryUtil {
     fun getAllFoodCategories(): List<FoodCategory> {
         return listOf(
@@ -21,5 +20,4 @@ class FoodCategoryUtil {
         val map = FoodCategory.values().associateBy(FoodCategory::value)
         return map[value]
     }
-
 }

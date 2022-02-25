@@ -4,12 +4,10 @@ import pro.tambovtsev.kmmrestfood.datasource.network.RecipeServiceImpl.Companion
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.DatetimeUtil
 
-
-
 class RecipeCacheImpl(
     val recipeDatabase: RecipeDatabase,
     private val datetimeUtil: DatetimeUtil,
-): RecipeCache {
+) : RecipeCache {
 
     private var queries: RecipeDBQueries = recipeDatabase.recipeDBQueries
 
@@ -28,7 +26,7 @@ class RecipeCacheImpl(
     }
 
     override fun insert(recipes: List<Recipe>) {
-        for(recipe in recipes){
+        for (recipe in recipes) {
             insert(recipe)
         }
     }
@@ -53,7 +51,7 @@ class RecipeCacheImpl(
             queries
                 .getRecipeById(id = recipeId.toLong())
                 .executeAsOne().toRecipe()
-        }catch (e: NullPointerException){
+        } catch (e: NullPointerException) {
             null
         }
     }

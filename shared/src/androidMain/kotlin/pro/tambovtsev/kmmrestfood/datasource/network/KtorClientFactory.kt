@@ -9,9 +9,11 @@ actual class KtorClientFactory {
     actual fun build(): HttpClient {
         return HttpClient(Android) {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-                    ignoreUnknownKeys = true
-                })
+                serializer = KotlinxSerializer(
+                    kotlinx.serialization.json.Json {
+                        ignoreUnknownKeys = true
+                    }
+                )
             }
         }
     }

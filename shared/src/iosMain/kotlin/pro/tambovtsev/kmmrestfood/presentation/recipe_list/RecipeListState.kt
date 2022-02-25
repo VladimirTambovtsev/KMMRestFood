@@ -4,7 +4,6 @@ import pro.tambovtsev.kmmrestfood.domain.model.GenericMessageInfo
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 import pro.tambovtsev.kmmrestfood.domain.util.Queue
 
-
 actual data class RecipeListState(
     val isLoading: Boolean = false,
     val page: Int = 1,
@@ -13,10 +12,10 @@ actual data class RecipeListState(
     val recipes: List<Recipe> = listOf(),
     val bottomRecipe: Recipe? = null, // track the recipe at the bottom of the list so we know when to trigger pagination
     val queue: Queue<GenericMessageInfo> = Queue(mutableListOf()), // messages to be displayed in ui
-)  {
+) {
     // Need secondary constructor to initialize with no args in SwiftUI
 
-    constructor(): this(
+    constructor() : this(
         isLoading = false,
         page = 1,
         query = "",
@@ -26,7 +25,7 @@ actual data class RecipeListState(
         queue = Queue(mutableListOf()),
     )
 
-    companion object{
+    companion object {
         const val RECIPE_PAGINATION_PAGE_SIZE = 30
     }
 }

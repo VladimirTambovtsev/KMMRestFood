@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     kotlin("plugin.serialization") version "1.6.10"
     id("com.squareup.sqldelight")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 version = "1.0"
@@ -97,10 +98,22 @@ android {
     }
 }
 
-
 sqldelight {
     database("RecipeDatabase") {
         packageName = "pro.tambovtsev.kmmrestfood.datasource.cache"
         sourceFolders = listOf("sqldelight")
+    }
+}
+
+//
+// application {
+//    mainClass.set("org.jlleitschuh.gradle.ktlint.sample.mpp.MainKt")
+// }
+ktlint {
+//    verbose.set(true)
+//    outputToConsole.set(true)
+    filter {
+        exclude("**/build/**")
+        exclude("**/generated/**")
     }
 }

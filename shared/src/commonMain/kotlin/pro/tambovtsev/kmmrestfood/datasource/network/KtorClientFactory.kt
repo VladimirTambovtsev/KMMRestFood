@@ -1,6 +1,5 @@
 package pro.tambovtsev.kmmrestfood.datasource.network
 
-
 import io.ktor.client.*
 import pro.tambovtsev.kmmrestfood.datasource.network.model.RecipeDto
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
@@ -26,5 +25,5 @@ fun RecipeDto.toRecipe(): Recipe {
 }
 
 fun List<RecipeDto>.toRecipeList(): List<Recipe> {
-    return map{ it.toRecipe() }
+    return map { it.toRecipe() }
 }

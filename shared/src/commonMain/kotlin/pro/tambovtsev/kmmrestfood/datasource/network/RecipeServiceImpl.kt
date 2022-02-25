@@ -6,14 +6,13 @@ import pro.tambovtsev.kmmrestfood.datasource.network.model.RecipeDto
 import pro.tambovtsev.kmmrestfood.datasource.network.model.RecipeSearchResponse
 import pro.tambovtsev.kmmrestfood.domain.model.Recipe
 
-
 class RecipeServiceImpl(
     private val httpClient: HttpClient,
     private val baseUrl: String,
-): RecipeService {
+) : RecipeService {
 
     override suspend fun search(page: Int, query: String): List<Recipe> {
-        return httpClient.get<RecipeSearchResponse>{
+        return httpClient.get<RecipeSearchResponse> {
             url("$baseUrl/search?page=$page&query=$query")
             header("Authorization", TOKEN)
         }
@@ -21,7 +20,7 @@ class RecipeServiceImpl(
     }
 
     override suspend fun get(id: Int): Recipe {
-        return httpClient.get<RecipeDto>{
+        return httpClient.get<RecipeDto> {
             url("$baseUrl/get?id=$id")
             header("Authorization", TOKEN)
         }.toRecipe()
