@@ -9,7 +9,6 @@
 import SwiftUI
 import shared
 
-
 class RecipeListViewModel: ObservableObject {
 
     // Dependencies
@@ -33,11 +32,11 @@ class RecipeListViewModel: ObservableObject {
         case is RecipeListEvents.LoadRecipes:
             loadRecipes()
         case is RecipeListEvents.NewSearch:
-            doNothing()
+            newSearch()
         case is RecipeListEvents.NextPage:
-            doNothing()
+            nextPage()
         case is RecipeListEvents.OnUpdateQuery:
-            doNothing()
+            onUpdateQuery(query: (stateEvent as! RecipeListEvents.OnUpdateQuery).query)
         case is RecipeListEvents.OnSelectCategory:
             doNothing()
         case RecipeListEvents.OnRemoveHeadMessageFromQueue():
@@ -45,6 +44,38 @@ class RecipeListViewModel: ObservableObject {
         default:
             doNothing()
         }
+    }
+
+    private func newSearch() {
+        resetSearchState()
+        loadRecipes()
+    }
+
+    private func nextPage(){
+        let currentState = (self.state.copy() as! RecipeListState)
+        updateState(page: Int(currentState.page) + 1)
+        loadRecipes()
+    }
+
+    private func resetSearchState(){
+        let currentState = (self.state.copy() as! RecipeListState)
+        var foodCategory = currentState.selectedCategory
+        if(foodCategory?.value != currentState.query){
+            foodCategory = nil
+        }
+        self.state = self.state.doCopy(
+                isLoading: currentState.isLoading,
+                page: 1, // reset
+                query: currentState.query,
+                selectedCategory: foodCategory, // Maybe reset (see logic above)
+                recipes: [], // reset
+                bottomRecipe:  currentState.bottomRecipe,
+                queue: currentState.queue
+        )
+    }
+
+    private func onUpdateQuery(query: String){
+        updateState(query: query)
     }
 
     private func loadRecipes(){
@@ -77,6 +108,10 @@ class RecipeListViewModel: ObservableObject {
         }
     }
 
+    private func onUpdateBottomRecipe(recipe: Recipe){
+        updateState(bottomRecipe: recipe)
+    }
+
     private func appendRecipes(recipes: [Recipe]){
         var currentState = (self.state.copy() as! RecipeListState)
         var currentRecipes = currentState.recipes
@@ -87,9 +122,11 @@ class RecipeListViewModel: ObservableObject {
                 query: currentState.query,
                 selectedCategory: currentState.selectedCategory,
                 recipes: currentRecipes, // update recipes
+                bottomRecipe: currentState.bottomRecipe,
                 queue: currentState.queue
         )
         currentState = (self.state.copy() as! RecipeListState)
+        self.onUpdateBottomRecipe(recipe: currentState.recipes[currentState.recipes.count - 1])
     }
 
     private func handleMessageByUIComponentType(_ message: GenericMessageInfo){
@@ -100,16 +137,34 @@ class RecipeListViewModel: ObservableObject {
         // does nothing
     }
 
+    func shouldQueryNextPage(recipe: Recipe) -> Bool {
+        // check if looking at the bottom recipe
+        // if lookingAtBottom -> proceed
+        // if PAGE_SIZE * page <= recipes.length
+        // if !queryInProgress
+        // else -> do nothing
+        let currentState = (self.state.copy() as! RecipeListState)
+        if(recipe.id == currentState.bottomRecipe?.id){
+            if(RecipeListState.Companion().RECIPE_PAGINATION_PAGE_SIZE * currentState.page <= currentState.recipes.count){
+                if(!currentState.isLoading){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     /**
      *  Not everything can be conveniently updated with this function.
      *  Things like recipes and selectedCategory must have their own functions.
      *  Basically if more then one action must be taken then it cannot be updated with this function.
-     *  ex: updating selected category requires us to 1) update category, 2) update the query, 3) trigger new search event
+     *  ex: updating selected category requires us to: 1) update category, 2) update the query, 3) trigger new search event
      */
     func updateState(
             isLoading: Bool? = nil,
             page: Int? = nil,
             query: String? = nil,
+            bottomRecipe: Recipe? = nil,
             queue: Queue<GenericMessageInfo>? = nil
     ){
         let currentState = (self.state.copy() as! RecipeListState)
@@ -118,7 +173,8 @@ class RecipeListViewModel: ObservableObject {
                 page: Int32(page ?? Int(currentState.page)),
                 query: query ?? currentState.query,
                 selectedCategory: currentState.selectedCategory,
-                recipes: currentState.recipes ,
+                recipes: currentState.recipes,
+                bottomRecipe:  bottomRecipe ?? currentState.bottomRecipe,
                 queue: queue ?? currentState.queue
         )
     }

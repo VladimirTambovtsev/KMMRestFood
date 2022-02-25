@@ -12,6 +12,8 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		3B34A55927C6A9520032A299 /* RecipeListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B34A55827C6A9520032A299 /* RecipeListScreen.swift */; };
 		3B34A55B27C77EDA0032A299 /* RecipeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B34A55A27C77EDA0032A299 /* RecipeListViewModel.swift */; };
+		3B3CE2CD27C8E66800B82980 /* SearchAppBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3CE2CC27C8E66800B82980 /* SearchAppBar.swift */; };
+		3B3CE2CF27C8EDAE00B82980 /* FoodCategoryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3CE2CE27C8EDAE00B82980 /* FoodCategoryPill.swift */; };
 		5BDC492B1F107C183B1104A7 /* Pods_iosFood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BAC21FE44DA05119CAA9F66 /* Pods_iosFood.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,8 @@
 		26E837372F4611E8F018AC8A /* Pods-iosFood.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosFood.debug.xcconfig"; path = "Target Support Files/Pods-iosFood/Pods-iosFood.debug.xcconfig"; sourceTree = "<group>"; };
 		3B34A55827C6A9520032A299 /* RecipeListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListScreen.swift; sourceTree = "<group>"; };
 		3B34A55A27C77EDA0032A299 /* RecipeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListViewModel.swift; sourceTree = "<group>"; };
+		3B3CE2CC27C8E66800B82980 /* SearchAppBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAppBar.swift; sourceTree = "<group>"; };
+		3B3CE2CE27C8EDAE00B82980 /* FoodCategoryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCategoryPill.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosFood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosFood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F21FBBA2767BB35D20027972 /* Pods-iosFood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosFood.release.xcconfig"; path = "Target Support Files/Pods-iosFood/Pods-iosFood.release.xcconfig"; sourceTree = "<group>"; };
@@ -61,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				3B34A55727C6A9320032A299 /* recipe_list */,
+				52688697FD47D35E3E0E13D9 /* components */,
 			);
 			path = presentation;
 			sourceTree = "<group>";
@@ -80,6 +85,15 @@
 				0BAC21FE44DA05119CAA9F66 /* Pods_iosFood.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		52688697FD47D35E3E0E13D9 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				3B3CE2CC27C8E66800B82980 /* SearchAppBar.swift */,
+				3B3CE2CE27C8EDAE00B82980 /* FoodCategoryPill.swift */,
+			);
+			path = components;
 			sourceTree = "<group>";
 		};
 		7555FF72242A565900829871 = {
@@ -209,6 +223,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B34A55927C6A9520032A299 /* RecipeListScreen.swift in Sources */,
+				3B3CE2CD27C8E66800B82980 /* SearchAppBar.swift in Sources */,
+				3B3CE2CF27C8EDAE00B82980 /* FoodCategoryPill.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				3B34A55B27C77EDA0032A299 /* RecipeListViewModel.swift in Sources */,
 			);
