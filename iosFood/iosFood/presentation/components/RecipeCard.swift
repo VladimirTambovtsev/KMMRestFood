@@ -5,7 +5,6 @@
 //  Created by Владимир Тамбовцев on 25.02.2022.
 //  Copyright © 2022 orgName. All rights reserved.
 //
-
 import SwiftUI
 import shared
 import SDWebImageSwiftUI
@@ -33,13 +32,12 @@ struct RecipeCard: View {
                     .clipped() // 3
 
             HStack(alignment: .lastTextBaseline){
-                Text(recipe.title)
-                        .font(Font.custom("Avenir", size: 16))
+                DefaultText(recipe.title, size: 19)
                         .frame(alignment: .center)
 
                 Spacer()
 
-                Text(String(recipe.rating))
+                DefaultText(String(recipe.rating))
                         .frame(alignment: .trailing)
             }
                     .padding(.top, 8)
