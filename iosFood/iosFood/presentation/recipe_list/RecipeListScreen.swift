@@ -59,15 +59,12 @@ struct RecipeListScreen: View {
                                                     cacheModule: self.cacheModule
                                             )
                                     ) {
-
-                                    RecipeCard(recipe: recipe)
-                                            .onAppear(perform: {
-                                                if viewModel.shouldQueryNextPage(recipe: recipe) {
-                                                    viewModel.onTriggerEvent(stateEvent: RecipeListEvents.NextPage())
-                                                }
-                                            })
-                                        // workaround for hiding arrows
-                                        EmptyView()
+                                        RecipeCard(recipe: recipe)
+                                                .onAppear(perform: {
+                                                    if viewModel.shouldQueryNextPage(recipe: recipe) {
+                                                        viewModel.onTriggerEvent(stateEvent: RecipeListEvents.NextPage())
+                                                    }
+                                                })
                                     }
                                 }
                             }
@@ -83,6 +80,15 @@ struct RecipeListScreen: View {
                 }
             }
                     .navigationBarHidden(true)
+                    .alert(isPresented: $viewModel.showDialog, content: {
+                        let first = viewModel.state.queue.peek()!
+                        return GenericMessageInfoAlert().build(
+                                message: first,
+                                onRemoveHeadMessage: {
+                                    viewModel.onTriggerEvent(stateEvent: RecipeListEvents.OnRemoveHeadMessageFromQueue())
+                                }
+                        )
+                    })
         }
     }
 }
