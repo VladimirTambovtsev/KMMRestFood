@@ -47,7 +47,7 @@ struct SearchAppBar: View {
                 ScrollView(.horizontal){
                     HStack(spacing: 10){
                         ForEach(foodCategories, id: \.self){ category in
-                            FoodCategoryChip(
+                            FoodCategoryPill(
                                 category: category.value,
                                 isSelected: selectedCategory == category
                             )

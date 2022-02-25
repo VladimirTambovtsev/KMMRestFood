@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodCategoryChip: View {
+struct FoodCategoryPill: View {
     
     private let category: String
     private let isSelected: Bool
@@ -30,6 +30,6 @@ struct FoodCategoryChip: View {
 
 struct FoodCategoryChip_Previews: PreviewProvider {
     static var previews: some View {
-        FoodCategoryChip(category: "Chicken")
+        FoodCategoryPill(category: "Chicken")
     }
 }
