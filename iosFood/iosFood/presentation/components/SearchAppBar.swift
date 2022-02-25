@@ -6,21 +6,23 @@
 //  Copyright © 2022 orgName. All rights reserved.
 //
 
-
 import SwiftUI
 import shared
 
 struct SearchAppBar: View {
     
     @State var query: String
+    private let selectedCategory: FoodCategory?
     private let foodCategories: [FoodCategory]
     private let onTriggerEvent: (RecipeListEvents) -> Void
     
     init(
         query: String,
+        selectedCategory: FoodCategory?,
         foodCategories: [FoodCategory],
         onTriggerEvent: @escaping (RecipeListEvents) -> Void
     ) {
+        self.selectedCategory = selectedCategory
         self.foodCategories = foodCategories
         self.onTriggerEvent = onTriggerEvent
         self._query = State(initialValue: query) // set initial value for query
@@ -47,11 +49,11 @@ struct SearchAppBar: View {
                         ForEach(foodCategories, id: \.self){ category in
                             FoodCategoryChip(
                                 category: category.value,
-                                isSelected: false // TODO
+                                isSelected: selectedCategory == category
                             )
                             .onTapGesture {
                                 query = category.value
-                                // TODO
+                                onTriggerEvent(RecipeListEvents.OnSelectCategory(category: category))
                             }
                         }
                     }
@@ -63,3 +65,9 @@ struct SearchAppBar: View {
             .background(Color.white.opacity(0))
         }
 }
+
+//struct SearchAppBar_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SearchAppBar()
+//    }
+//}
